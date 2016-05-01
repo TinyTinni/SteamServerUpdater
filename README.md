@@ -11,6 +11,7 @@ So, I wrote my own updater, based on C++. All you need is SteamCMD, a internet c
 You need a "ServerInfo.ini" file providing some information.
 You can find an example in the current repo.
 Please take into account, that error handling is not yet implemented. Thats means, it will crash if some paths provided are wrong.
+Every instance of the SteamServerUpdater can only run one server instance. This might change in the future.
 
 #How Does it Work?
 This program will work on the buildID. The buildID of your current installation is provided by the manifest data in "steamapps".
