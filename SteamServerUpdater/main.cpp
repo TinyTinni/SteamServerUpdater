@@ -17,7 +17,8 @@ int main(int argc, char** argv)
     initStruct.args = pt.get<std::string>("AppInfo.Args");
     initStruct.installDir = pt.get<std::string>("AppInfo.InstallDir");
     //initStruct.manifestPath = pt.get<std::string>("AppInfo.ManifestPath");//todo: extract from given info
-    const std::string steamCMDBin = pt.get<std::string>("SteamCMD.Bin");
+    const std::string steamCMDBin = pt.get<std::string>("General.SteamCMDBin");
+    const size_t updateInterval = pt.get<size_t>("General.UpdateInterval");
     std::cout << " Done" << std::endl;
 
     // Read cache file
@@ -63,7 +64,7 @@ int main(int argc, char** argv)
     size_t i = 0;
     while (p.isRunning())
     {
-        p.waitFor(15000);
+        p.waitFor(1000 * updateInterval);
         appInfo.updateCache();
         
         if (p.getInstalledBuildId() != appInfo.getBuildId(p.getAppId()))
