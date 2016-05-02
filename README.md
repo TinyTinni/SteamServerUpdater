@@ -1,4 +1,6 @@
-First version of the saturday evening/sunday morning program for a automatic steam server updater. Please don't kill me for the code mess, i will clean it up later.
+First version of the saturday evening/sunday morning program for a automatic steam server updater.
+I updated the version, cleaned it up, more error handling if you cannot handle file paths etc.
+Still alpha version because i need to test it, but it can be used.
 
 # SteamServerUpdater
 Steam doesn't provide a automatic update functionality if the application is running.
@@ -10,7 +12,6 @@ So, I wrote my own updater, based on C++. All you need is SteamCMD, a internet c
 #How to use?
 You need a "ServerInfo.ini" file providing some information.
 You can find an example in the current repo.
-Please take into account, that error handling is not yet implemented. Thats means, it will crash if some paths provided are wrong.
 Every instance of the SteamServerUpdater can only run one server instance. This might change in the future.
 
 #How Does it Work?

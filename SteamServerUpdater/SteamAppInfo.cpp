@@ -7,16 +7,10 @@
 #include <iostream>
 
 #ifdef _MSC_VER
-typedef wchar_t unichar_t;
-typedef std::wstring uniString;
 #define PRELIT(x) L##x
 #else
-typedef char unichar_t;
-typedef std::string uniString;
 #define PRELIT(x) x
 #endif
-
-const auto spaceChar = unichar_t(0); // defines the char between 2 words in the appcache
 
 SteamAppInfo::SteamAppInfo(const std::string steamCMDBin) : 
     m_steamBin{steamCMDBin},
@@ -42,6 +36,8 @@ bool SteamAppInfo::updateCache() const
 
     if (!boost::filesystem::exists(m_appInfoPath))
         throw std::exception("appInfoPath does not exist");
+
+
     auto lastModified = boost::filesystem::last_write_time(m_appInfoPath);
     if (lastModified <= m_lastModified)
         return false;
@@ -69,8 +65,7 @@ size_t SteamAppInfo::searchCacheForNumber(unsigned number, size_t pos) const
     unichar_t appIdString[sizeof(number) + 3];
     std::copy(reinterpret_cast<char*>(&number), reinterpret_cast<char*>(&number) + sizeof(number), appIdString + 1);
     appIdString[sizeof(number) + 2] = '\0';
-    appIdString[0] = 0;
-    appIdString[sizeof(number) + 1] = 0;
+    appIdString[0] = appIdString[sizeof(number) + 1] = spaceChar;
 
     size_t p = m_cacheString.find(appIdString + 1);
 
@@ -91,6 +86,13 @@ size_t SteamAppInfo::getAppPos(const std::string& appId) const
 
 std::string SteamAppInfo::getValue(std::string key, const std::string& appId) const
 {
+    // format: key and value are seperated by 0x20 and alternating
+    // in front of key, the value type is specified with a number
+    // 01 -> string
+    // 02 -> number (unsigned?)
+    // TODO: 
+    // - use real uft8 encoding via boost
+    // - you should use variants for the return value
     size_t appPos = getAppPos(appId);
     appPos = searchCacheForString(key, appPos);
     appPos += key.size()+1;

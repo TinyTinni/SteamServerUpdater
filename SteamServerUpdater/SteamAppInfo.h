@@ -7,7 +7,6 @@
 // ticket of the problem: https://github.com/ValveSoftware/Source-1-Games/issues/1929
 
 #include <string>
-#include <map>
 #include <unordered_map>
 #include <ctime>
 
@@ -19,6 +18,7 @@ class SteamAppInfo
     typedef char unichar_t;
 #endif
     typedef std::basic_string<unichar_t> uniString;
+    const static unichar_t spaceChar = unichar_t(0); // defines the char between 2 words in the appcache
 
     const std::string m_steamBin;
 
