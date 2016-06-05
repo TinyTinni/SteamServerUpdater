@@ -64,18 +64,16 @@ void SteamServerProcess::startProgram()
                 //todo: reread manifest only if necessary (remeber last modified)
     m_manifest = getManifest(m_manifestPath);
 
-    std::cout << "Start Server: " << m_exePath << std::endl;
+    std::cout << "Start Server: " << m_exePath << " " << m_Args <<  std::endl;
     //auto startFunc = [this]()
     //{
     using namespace boost::process::initializers;
     m_process = new boost::process::child(boost::process::execute(
         run_exe(m_exePath),
-        set_cmd_line(m_Args),
+        set_cmd_line(m_exePath+" "+m_Args),
         start_in_dir(boost::filesystem::path(m_exePath).parent_path())
     ));
     //};
-
-    Sleep(5000);
 
 
     //startFunc();
