@@ -104,14 +104,26 @@ std::string SteamAppInfo::getValue(std::string key, const std::string& appId) co
     return result;
 }
 
-std::string SteamAppInfo::getBuildId(const std::string& appId) const
+std::string SteamAppInfo::getBuildId(const std::string& appId, const std::string& branch) const
 {
     size_t pos = getAppPos(appId);
 
     if (pos == uniString::npos)
         return "";
 
-    pos = m_cacheString.find(PRELIT("public"), pos);
+    pos = m_cacheString.find(PRELIT("branches"), pos);
+    auto appEndPos = m_cacheString.find(PRELIT("common"), pos);
+
+    pos = m_cacheString.find(uniString{branch.begin(), branch.end()}, pos);
+
+    if (pos >= appEndPos)
+        return "";
+
+    auto pos2 = pos;
+    while (m_cacheString[pos2] != 0)
+        std::cout << (char)m_cacheString[pos2++];
+    std::cout << std::endl;    
+
     pos = m_cacheString.find(PRELIT("buildid"), pos);
 
     //read build id in reverse order

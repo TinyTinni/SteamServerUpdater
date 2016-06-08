@@ -16,7 +16,9 @@ class SteamServerProcess
     const std::string m_appID;
     const std::string m_exePath;
     const std::string m_Args;
+    const std::string m_branch;
     const std::string m_manifestPath;
+
     boost::process::child* m_process;
     std::future<void> m_processThread;
     struct ManifestData
@@ -34,12 +36,14 @@ public:
         std::string args;
         std::string installDir;
         std::string manifestPath;
+        std::string branch;
     };
 
     SteamServerProcess(const SteamAppInfo &appInfo, const Init& i)
         :m_appID(i.appId),
         m_exePath(i.installDir+"\\"+appInfo.getValue("executable",i.appId)), 
         m_Args(i.args),
+        m_branch(i.branch),
         m_manifestPath(i.manifestPath),
         m_process(nullptr), 
         m_processThread(),
@@ -51,6 +55,8 @@ public:
     }
 
     std::string getAppName()const { return m_manifest.name; }
+
+    std::string getBranch()const { return m_branch;  }
 
     std::string getAppId()const { return m_appID; }
 

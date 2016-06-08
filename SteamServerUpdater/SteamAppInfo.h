@@ -32,8 +32,8 @@ public:
     SteamAppInfo(const std::string steamCMDBin);
     ~SteamAppInfo();
 
-    /// get the build id from appInfo. Returns empty string if appId wasnt found
-    std::string getBuildId(const std::string& appId) const;
+    /// get the build id from appInfo and the given branch. Returns empty string if appId wasnt found
+    std::string getBuildId(const std::string& appId, const std::string & branch) const;
 
     /** get information from appInfo about a specified field (e.g. executable returns the relative path to the executable)
     returns empty string if nothing was found

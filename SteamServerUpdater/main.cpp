@@ -27,6 +27,7 @@ struct IniStruct
     std::string appId;
     std::string installDir;
     std::string args;
+    std::string branch;
 
     std::string steamCMD;
     size_t updateInterval;
@@ -40,6 +41,7 @@ struct IniStruct
         boost::property_tree::ini_parser::read_ini(file, pt);
         initStruct.appId = pt.get<std::string>("AppInfo.AppId");
         initStruct.args = pt.get<std::string>("AppInfo.Args");
+        initStruct.branch = pt.get<std::string>("AppInfo.Branch");
 
         initStruct.installDir = pt.get<std::string>("AppInfo.InstallDir");
         if (!initStruct.installDir.empty() && !boost::filesystem::is_directory(initStruct.installDir))
@@ -68,7 +70,7 @@ void runServer(const SteamAppInfo& appInfo, SteamServerProcess &p, size_t update
         p.waitFor(1000 * updateInSec);
         // get steam cache update
         appInfo.updateCache();
-        auto appInfoBuildId = appInfo.getBuildId(p.getAppId());
+        auto appInfoBuildId = appInfo.getBuildId(p.getAppId(), p.getBranch());
         // update app if neccessary
         if (p.getInstalledBuildId() != appInfoBuildId)
         {
@@ -94,6 +96,7 @@ int main(int argc, char** argv)
         SteamServerProcess::Init processInit;
         processInit.appId = ini.appId;
         processInit.args = ini.args;
+        processInit.branch = ini.branch.empty()? "public" : ini.branch;
         
 
         // extract manifest path for given appId and define installDir
@@ -116,15 +119,19 @@ int main(int argc, char** argv)
         std::string steamCMDArgs = " +login anonymous";
         if (!ini.installDir.empty())
             steamCMDArgs += " +force_install_dir " + ini.installDir;
-        steamCMDArgs += " +app_update " + ini.appId + " +quit";
+        steamCMDArgs += " +app_update " + ini.appId;
+        if (!ini.branch.empty())
+            steamCMDArgs += " -beta " + ini.branch;
+        steamCMDArgs += " +quit";
 
         // create update function
         auto update = [&ini, &steamCMDArgs]()
         {
             std::cout << "update Server" << std::endl;
+            std::cout << "execute: " << ini.steamCMD << steamCMDArgs << std::endl;
             auto c = boost::process::execute(
                 boost::process::initializers::run_exe(ini.steamCMD),
-                boost::process::initializers::set_cmd_line(steamCMDArgs),
+                boost::process::initializers::set_cmd_line(ini.steamCMD + steamCMDArgs),
                 boost::process::initializers::start_in_dir(boost::filesystem::path(ini.steamCMD).parent_path())
             );
             boost::process::wait_for_exit(c);
