@@ -28,6 +28,7 @@ struct IniStruct
     std::string installDir;
     std::string args;
     std::string branch;
+    std::string branchPW;
 
     std::string steamCMD;
     size_t updateInterval;
@@ -42,6 +43,7 @@ struct IniStruct
         initStruct.appId = pt.get<std::string>("AppInfo.AppId");
         initStruct.args = pt.get<std::string>("AppInfo.Args");
         initStruct.branch = pt.get<std::string>("AppInfo.Branch");
+        initStruct.branchPW = pt.get<std::string>("AppInfo.BranchPW"); 
 
         initStruct.installDir = pt.get<std::string>("AppInfo.InstallDir");
         if (!initStruct.installDir.empty() && !boost::filesystem::is_directory(initStruct.installDir))
@@ -122,6 +124,8 @@ int main(int argc, char** argv)
         steamCMDArgs += " +app_update " + ini.appId;
         if (!ini.branch.empty())
             steamCMDArgs += " -beta " + ini.branch;
+        if (!ini.branchPW.empty())
+            steamCMDArgs += " -betapassword " + ini.branchPW;
         steamCMDArgs += " +quit";
 
         // create update function
