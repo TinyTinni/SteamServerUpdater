@@ -17,6 +17,7 @@ SteamAppInfo::SteamAppInfo(const std::string steamCMDBin) :
     m_appInfoPath{ boost::filesystem::path(steamCMDBin).parent_path().string() + "/appcache/appinfo.vdf" }, //todo: check it on linux
     m_lastModified{ 0 } 
 {
+    updateCache();
 }
 
 
