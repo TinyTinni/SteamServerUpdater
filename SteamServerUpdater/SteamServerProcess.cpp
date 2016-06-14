@@ -143,9 +143,9 @@ SteamServerProcess::SteamServerProcess(const SteamAppInfo & appInfo, Init i)
     }
     else
     {
-        m_manifestPath = i.installDir + "/steamapps";
-        m_manifestPath = i.manifestPath + "/appmanifest_" + i.appId + ".acf";
+        m_manifestPath = i.installDir + "/steamapps";  
     }
+    m_manifestPath += "/appmanifest_" + i.appId + ".acf";
 
     //check if installDir exists. ManifestPath will be checked later, everytime when its is read
     if (!i.installDir.empty() && !boost::filesystem::is_directory(i.installDir))

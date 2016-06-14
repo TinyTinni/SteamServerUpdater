@@ -91,7 +91,7 @@ int main(int argc, char** argv)
     {
         std::cerr << "[ERROR] Program crash.\nPrinting backtrace:\n" << boost::current_exception_diagnostic_information() << std::endl;
     }
-#ifdef _DEBUG && _MS_VER
+#ifdef _DEBUG && _MSC_VER
     system("Pause");
 #endif
 
