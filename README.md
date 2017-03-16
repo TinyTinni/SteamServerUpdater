@@ -9,20 +9,20 @@ There is already a Auto Updater Script provided [here](https://github.com/C0nw0n
 
 So, I wrote my own updater, based on C++. All you need is SteamCMD, a internet connection and enough space for the server files.
 
-##How to use?
+## How to use?
 You need a "ServerInfo.ini" file providing some information.
 You can find an example in the current repo.
 Every instance of the SteamServerUpdater can only run one server instance. This might change in the future.
 
-##How Does it Work?
+## How Does it Work?
 This program will work on the buildID. The buildID of your current installation is provided by the manifest data in "steamapps".
 The current buildID of your application on the steamservers is saved within SteamCMD.
 Since you cannot pipe from SteamCMD [(bugtracking)](https://github.com/ValveSoftware/Source-1-Games/issues/1929) you cannot ask SteamCMD for the buildID, but it is possible to read the buildID from the SteamCMD cache.
 
-##Supported Platforms
-It is possible to run the updater on every platform, but it was only tested on windows. On Linux, the paths of the files, like 'appinfo.vdf' are different.
+## Supported Platforms
+Windows only. On Linux, you can pipe the output.
 
-##Build Dependencies
+## Build Dependencies
 - [CMake](https://cmake.org/) to generate make files
 - [Boost](http://www.boost.org/)
 - [Boost Process v0.5](http://www.highscore.de/boost/process0.5/)
